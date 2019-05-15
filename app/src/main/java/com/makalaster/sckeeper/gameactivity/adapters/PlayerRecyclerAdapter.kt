@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.makalaster.sckeeper.R
 import com.makalaster.sckeeper.models.Player
+import com.makalaster.widgets.ScoreBoxListener
 import java.util.ArrayList
 
-class PlayerRecyclerAdapter : RecyclerView.Adapter<PlayerScoreTableViewHolder>(),
+class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : RecyclerView.Adapter<PlayerScoreTableViewHolder>(),
     PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener {
 
     private val playerList = ArrayList<Player>()
@@ -28,7 +29,7 @@ class PlayerRecyclerAdapter : RecyclerView.Adapter<PlayerScoreTableViewHolder>()
             2 -> PlayerScoreTableViewHolder.AddPlayerViewHolder(
                 inflater.inflate(R.layout.layout_add_player_viewholder, parent, false), this)
             else -> PlayerScoreTableViewHolder.PlayerViewHolder(
-                inflater.inflate(R.layout.layout_player_viewholder, parent, false))
+                inflater.inflate(R.layout.layout_player_viewholder, parent, false), scoreBoxListener)
         }
     }
 

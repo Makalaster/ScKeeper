@@ -10,9 +10,10 @@ import android.view.ViewGroup
 
 import com.makalaster.sckeeper.R
 import com.makalaster.sckeeper.gameactivity.adapters.PlayerRecyclerAdapter
+import com.makalaster.widgets.ScoreBoxListener
 import kotlinx.android.synthetic.main.round_fragment.*
 
-class RoundFragment : Fragment() {
+class RoundFragment : Fragment(), ScoreBoxListener {
 
     companion object {
         fun newInstance() = RoundFragment()
@@ -30,7 +31,7 @@ class RoundFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        player_list.adapter = PlayerRecyclerAdapter()
+        player_list.adapter = PlayerRecyclerAdapter(this)
         player_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
 
@@ -41,4 +42,27 @@ class RoundFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onDecrementTap() {
+
+    }
+
+    override fun onDecrementLongPress(): Boolean {
+        return true
+    }
+
+    override fun onIncrementTap() {
+
+    }
+
+    override fun onIncrementLongPress(): Boolean {
+        return true
+    }
+
+    override fun onScoreDisplayTap() {
+
+    }
+
+    override fun onScoreDisplayLongPress(): Boolean {
+        return true
+    }
 }
