@@ -1,10 +1,10 @@
 package com.makalaster.sckeeper.gameactivity.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
+import androidx.recyclerview.widget.RecyclerView
 import com.makalaster.sckeeper.R
-import com.makalaster.sckeeper.models.Player
+import com.makalaster.data.models.Player
 import com.makalaster.widgets.ScoreBoxListener
 import kotlinx.android.synthetic.main.layout_player_viewholder.view.*
 

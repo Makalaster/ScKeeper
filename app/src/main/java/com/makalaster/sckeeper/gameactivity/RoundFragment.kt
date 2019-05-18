@@ -1,12 +1,13 @@
 package com.makalaster.sckeeper.gameactivity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.makalaster.sckeeper.R
 import com.makalaster.sckeeper.gameactivity.adapters.PlayerRecyclerAdapter
@@ -32,7 +33,7 @@ class RoundFragment : Fragment(), ScoreBoxListener {
         super.onViewCreated(view, savedInstanceState)
 
         player_list.adapter = PlayerRecyclerAdapter(this)
-        player_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        player_list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

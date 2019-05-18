@@ -1,10 +1,10 @@
 package com.makalaster.sckeeper.gameactivity.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.makalaster.data.models.Player
 import com.makalaster.sckeeper.R
-import com.makalaster.sckeeper.models.Player
 import com.makalaster.widgets.ScoreBoxListener
 import java.util.ArrayList
 
@@ -19,7 +19,7 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : Re
     }
 
     init {
-        playerList.add(Player("Add Player", 0, ArrayList()))
+        playerList.add(Player("Add Player", 0))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerScoreTableViewHolder {
@@ -52,7 +52,9 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : Re
     }
 
     override fun onAddPlayerClicked() {
-        playerList.add(playerList.size - 1, Player("Player ${playerList.size - 1}", playerList.size - 1, ArrayList()))
+        playerList.add(playerList.size - 1,
+            Player("Player ${playerList.size - 1}", playerList.size - 1)
+        )
         notifyItemInserted(playerList.size - 1)
     }
 }

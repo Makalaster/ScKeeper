@@ -1,7 +1,7 @@
 package com.makalaster.sckeeper.gameactivity
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class RoundViewModel() : ViewModel() {
     // TODO: Implement the ViewModel
