@@ -8,10 +8,11 @@ import com.makalaster.sckeeper.R
 import com.makalaster.widgets.ScoreBoxListener
 import java.util.ArrayList
 
-class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : RecyclerView.Adapter<PlayerScoreTableViewHolder>(),
-    PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener {
+class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
+                            private val listener: PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener):
+    RecyclerView.Adapter<PlayerScoreTableViewHolder>() {
 
-    private val playerList = ArrayList<Player>()
+    private var playerList = ArrayList<Player>()
 
     companion object {
         private const val PLAYER_SCORE = 1
@@ -27,7 +28,7 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : Re
 
         return when (viewType) {
             2 -> PlayerScoreTableViewHolder.AddPlayerViewHolder(
-                inflater.inflate(R.layout.layout_add_player_viewholder, parent, false), this)
+                inflater.inflate(R.layout.layout_add_player_viewholder, parent, false), listener)
             else -> PlayerScoreTableViewHolder.PlayerViewHolder(
                 inflater.inflate(R.layout.layout_player_viewholder, parent, false), scoreBoxListener)
         }
@@ -51,10 +52,8 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener) : Re
         return PLAYER_SCORE
     }
 
-    override fun onAddPlayerClicked() {
-        playerList.add(playerList.size - 1,
-            Player("Player ${playerList.size - 1}", playerList.size - 1)
-        )
-        notifyItemInserted(playerList.size - 1)
+    fun setList(newPlayerList: List<Player>) {
+        playerList = ArrayList(newPlayerList)
+        notifyDataSetChanged()
     }
 }
