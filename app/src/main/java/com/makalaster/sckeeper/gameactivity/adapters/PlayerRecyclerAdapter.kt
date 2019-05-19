@@ -13,6 +13,7 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
     RecyclerView.Adapter<PlayerScoreTableViewHolder>() {
 
     private var playerList = ArrayList<Player>()
+    private val playerZero = Player("Add Player", -1)
 
     companion object {
         private const val PLAYER_SCORE = 1
@@ -20,7 +21,7 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
     }
 
     init {
-        playerList.add(Player("Add Player", 0))
+        playerList.add(playerZero)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerScoreTableViewHolder {
@@ -53,7 +54,12 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
     }
 
     fun setList(newPlayerList: List<Player>) {
-        playerList = ArrayList(newPlayerList)
+        if (newPlayerList.isNotEmpty())
+            playerList = ArrayList(newPlayerList)
+        else {
+            playerList.clear()
+            playerList.add(playerZero)
+        }
         notifyDataSetChanged()
     }
 }

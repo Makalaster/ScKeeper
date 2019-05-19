@@ -7,7 +7,7 @@ import com.makalaster.data.models.Player
 @Dao
 interface PlayerDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addPlayer(player: Player)
 
     @Query("SELECT * FROM PLAYERS ORDER BY player_number ASC")

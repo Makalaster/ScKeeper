@@ -1,7 +1,10 @@
 package com.makalaster.sckeeper.gameactivity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.makalaster.sckeeper.R
@@ -13,6 +16,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var roundPager: ViewPager
     private lateinit var roundTabs: TabLayout
     private val pagerAdapter = RoundPagerAdapter(supportFragmentManager)
+
+    private lateinit var viewModel: GameActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +36,27 @@ class GameActivity : AppCompatActivity() {
         fab.setOnClickListener {
             pagerAdapter.addRound(RoundFragment.newInstance())
         }
+
+        initViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_clear_players -> viewModel.clearPlayers()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(GameActivityViewModel::class.java)
     }
 }

@@ -22,12 +22,13 @@ class RoundFragment : Fragment(), ScoreBoxListener,
     PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener {
 
     private lateinit var adapter: PlayerRecyclerAdapter
+    private lateinit var viewModel: RoundViewModel
 
     companion object {
+        private var playerNumber = 0
+
         fun newInstance() = RoundFragment()
     }
-
-    private lateinit var viewModel: RoundViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +66,7 @@ class RoundFragment : Fragment(), ScoreBoxListener,
     }
 
     override fun onAddPlayerClicked() {
-        viewModel.addPlayer(Player("Player ${adapter.itemCount}", adapter.itemCount - 1))
+        viewModel.addPlayer(Player("Player ${adapter.itemCount}", ++playerNumber))
     }
 
     override fun onDecrementTap() {
