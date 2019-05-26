@@ -15,8 +15,6 @@ import com.makalaster.sckeeper.gameactivity.adapters.RoundPagerAdapter
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
-    private lateinit var roundPager: ViewPager
-    private lateinit var roundTabs: TabLayout
     private val pagerAdapter = RoundPagerAdapter(supportFragmentManager)
 
     private lateinit var viewModel: GameActivityViewModel
@@ -26,11 +24,8 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
         setSupportActionBar(toolbar)
 
-        roundPager = findViewById(R.id.round_pager)
-        roundTabs = findViewById(R.id.round_tabs)
-
-        roundTabs.setupWithViewPager(roundPager)
-        roundPager.adapter = pagerAdapter
+        round_tabs.setupWithViewPager(round_pager)
+        round_pager.adapter = pagerAdapter
 
         fab.setOnClickListener {
             viewModel.addRound(Round(pagerAdapter.count))
@@ -67,7 +62,7 @@ class GameActivity : AppCompatActivity() {
 
                 pagerAdapter.setRounds(roundsList)
 
-                roundPager.setCurrentItem(pagerAdapter.count -1, true)
+                round_pager.setCurrentItem(pagerAdapter.count -1, true)
             }
         })
     }
