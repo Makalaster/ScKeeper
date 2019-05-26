@@ -38,8 +38,8 @@ abstract class GameDatabase: RoomDatabase() {
 
 class TypeConverters {
     @TypeConverter
-    fun fromList(list: List<Int>): String = Gson().toJson(list)
+    fun fromMap(scoreMap: HashMap<Int, Int>): String = Gson().toJson(scoreMap)
 
     @TypeConverter
-    fun toList(scores: String): ArrayList<Int> = Gson().fromJson(scores, object: TypeToken<ArrayList<Int>>() {}.type)
+    fun fromMap(scores: String): HashMap<Int, Int> = Gson().fromJson(scores, object: TypeToken<HashMap<Int, Int>>() {}.type)
 }

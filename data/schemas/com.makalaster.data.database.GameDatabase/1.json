@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5e2029d0a8d877787bb8e8ccf1a61308",
+    "identityHash": "45e20c452b3e95b4958e0094544c3e32",
     "entities": [
       {
         "tableName": "PLAYERS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`player_scores` TEXT NOT NULL, `player_name` TEXT NOT NULL, `player_number` INTEGER NOT NULL, PRIMARY KEY(`player_number`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`player_number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_name` TEXT NOT NULL)",
         "fields": [
           {
-            "fieldPath": "scores",
-            "columnName": "player_scores",
-            "affinity": "TEXT",
+            "fieldPath": "playerNumber",
+            "columnName": "player_number",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -19,27 +19,27 @@
             "columnName": "player_name",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "playerNumber",
-            "columnName": "player_number",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "player_number"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "ROUNDS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`round_number` INTEGER NOT NULL, PRIMARY KEY(`round_number`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`player_scores` TEXT NOT NULL, `round_number` INTEGER NOT NULL, PRIMARY KEY(`round_number`))",
         "fields": [
+          {
+            "fieldPath": "scores",
+            "columnName": "player_scores",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "roundNumber",
             "columnName": "round_number",
@@ -60,7 +60,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e2029d0a8d877787bb8e8ccf1a61308\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"45e20c452b3e95b4958e0094544c3e32\")"
     ]
   }
 }

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.makalaster.data.models.Round
 import com.makalaster.sckeeper.R
 import com.makalaster.sckeeper.gameactivity.adapters.RoundPagerAdapter
 
@@ -30,11 +32,8 @@ class GameActivity : AppCompatActivity() {
         roundTabs.setupWithViewPager(roundPager)
         roundPager.adapter = pagerAdapter
 
-        pagerAdapter.addRound(RoundFragment.newInstance())
-        pagerAdapter.addRound(RoundFragment.newInstance())
-
         fab.setOnClickListener {
-            pagerAdapter.addRound(RoundFragment.newInstance())
+            viewModel.addRound(Round(pagerAdapter.count))
         }
 
         initViewModel()
@@ -49,7 +48,8 @@ class GameActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_clear_players -> viewModel.clearPlayers()
+                R.id.action_clear_all -> viewModel.clearAll()
+                R.id.action_clear_rounds -> viewModel.clearRounds()
             }
         }
 
@@ -58,5 +58,17 @@ class GameActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(GameActivityViewModel::class.java)
+
+        viewModel.rounds.observe(this, Observer {rounds ->
+            rounds?.let { roundsList ->
+                if (roundsList.isEmpty()) {
+                    viewModel.addRound(Round(0))
+                }
+
+                pagerAdapter.setRounds(roundsList)
+
+                roundPager.setCurrentItem(pagerAdapter.count -1, true)
+            }
+        })
     }
 }

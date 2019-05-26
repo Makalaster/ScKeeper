@@ -15,19 +15,36 @@ import com.makalaster.data.models.Player
 import com.makalaster.sckeeper.R
 import com.makalaster.sckeeper.gameactivity.adapters.PlayerRecyclerAdapter
 import com.makalaster.sckeeper.gameactivity.adapters.PlayerScoreTableViewHolder
-import com.makalaster.widgets.ScoreBoxListener
 import kotlinx.android.synthetic.main.round_fragment.*
 
-class RoundFragment : Fragment(), ScoreBoxListener,
-    PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener {
+class RoundFragment : Fragment(), PlayerScoreTableViewHolder.AddPlayerViewHolder.OnAddPlayerClickedListener {
 
     private lateinit var adapter: PlayerRecyclerAdapter
     private lateinit var viewModel: RoundViewModel
 
-    companion object {
-        private var playerNumber = 0
+    private val paramBundle = Bundle()
 
-        fun newInstance() = RoundFragment()
+    companion object {
+        private const val ROUND_NUMBER = "round number"
+
+        fun newInstance(roundNumber: Int): RoundFragment {
+            val fragment = RoundFragment()
+
+            val args = Bundle()
+            args.putInt(ROUND_NUMBER, roundNumber)
+
+            fragment.arguments = args
+
+            return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            paramBundle.putInt(ROUND_NUMBER, it.getInt(ROUND_NUMBER))
+        }
     }
 
     override fun onCreateView(
@@ -39,11 +56,6 @@ class RoundFragment : Fragment(), ScoreBoxListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        adapter = PlayerRecyclerAdapter(this, this)
-
-        player_list.adapter = adapter
-        player_list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,42 +66,39 @@ class RoundFragment : Fragment(), ScoreBoxListener,
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.loadRound()
+    }
+
     private fun initViewModel(application: Application) {
-        viewModel = ViewModelProviders.of(this, RoundViewModelFactory(application))
+        viewModel = ViewModelProviders.of(this, RoundViewModelFactory(application, paramBundle.getInt(ROUND_NUMBER)))
             .get(RoundViewModel::class.java)
 
-        viewModel.getPlayers().observe(this, Observer {
-            it.let {playerList ->
-                adapter.setList(playerList)
+        viewModel.players.observe(this, Observer {
+            it.let { playerList ->
+                adapter.updatePlayers(playerList)
             }
         })
+
+        viewModel.round.observe(this, Observer { round ->
+            round?.let {
+                adapter.updateRound(it)
+            }
+        })
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        adapter = PlayerRecyclerAdapter(viewModel, this)
+
+        player_list.adapter = adapter
+        player_list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
     override fun onAddPlayerClicked() {
-        viewModel.addPlayer(Player("Player ${adapter.itemCount}", ++playerNumber))
-    }
-
-    override fun onDecrementTap() {
-
-    }
-
-    override fun onDecrementLongPress(): Boolean {
-        return true
-    }
-
-    override fun onIncrementTap() {
-
-    }
-
-    override fun onIncrementLongPress(): Boolean {
-        return true
-    }
-
-    override fun onScoreDisplayTap() {
-
-    }
-
-    override fun onScoreDisplayLongPress(): Boolean {
-        return true
+        viewModel.addPlayer(Player(adapter.itemCount,"Player ${adapter.itemCount}"))
     }
 }
