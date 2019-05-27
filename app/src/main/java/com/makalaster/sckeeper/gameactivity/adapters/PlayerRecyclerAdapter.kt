@@ -1,6 +1,7 @@
 package com.makalaster.sckeeper.gameactivity.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -19,6 +20,7 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
     companion object {
         private const val PLAYER_SCORE = 1
         private const val ADD_PLAYER = 2
+        private const val TOTAL_SCORE = 3
 
         private const val ADD_PLAYER_NAME = "Add Player"
 
@@ -43,6 +45,8 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
         return when (viewType) {
             ADD_PLAYER -> PlayerScoreTableViewHolder.AddPlayerViewHolder(
                 inflater.inflate(R.layout.layout_add_player_viewholder, parent, false), listener)
+            TOTAL_SCORE -> PlayerScoreTableViewHolder.TotalScoreViewHolder(
+                inflater.inflate(R.layout.layout_total_viewholder, parent, false), round)
             else -> PlayerScoreTableViewHolder.PlayerViewHolder(
                 inflater.inflate(R.layout.layout_player_viewholder, parent, false), round, scoreBoxListener)
         }
@@ -52,11 +56,14 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
         when (holder) {
             is PlayerScoreTableViewHolder.PlayerViewHolder -> holder.bind(getItem(position))
             is PlayerScoreTableViewHolder.AddPlayerViewHolder -> holder.bind()
+            is PlayerScoreTableViewHolder.TotalScoreViewHolder -> holder.bind(getItem(position))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (getItem(position).name == ADD_PLAYER_NAME)
+        if (round.roundNumber == Round.TOTALS_ROUND) {
+            return TOTAL_SCORE
+        } else if (getItem(position).name == ADD_PLAYER_NAME)
             return ADD_PLAYER
 
         return PLAYER_SCORE
@@ -64,7 +71,8 @@ class PlayerRecyclerAdapter(private val scoreBoxListener: ScoreBoxListener,
 
     fun updatePlayers(playerList: List<Player>) {
         val listToAdd = playerList.toMutableList()
-        listToAdd.add(playerZero)
+        if (round.roundNumber != Round.TOTALS_ROUND)
+            listToAdd.add(playerZero)
 
         submitList(listToAdd)
     }

@@ -32,9 +32,34 @@ class RoundViewModel(application: Application, private val roundNumber: Int) : A
     }
 
     fun loadRound() {
-        viewModelScope.launch(Dispatchers.IO) {
-            round.postValue(roundRepository.getRoundNotLive(roundNumber))
+        if (roundNumber == Round.TOTALS_ROUND)
+            loadTotals()
+        else
+            viewModelScope.launch(Dispatchers.IO) {
+                round.postValue(roundRepository.getRoundNotLive(roundNumber))
+            }
+    }
 
+    private fun loadTotals() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val playersList = playerRepository.getPlayersNotLive()
+
+            val totalsRound = Round(Round.TOTALS_ROUND)
+            val rounds = roundRepository.getRoundsNotLive()
+
+            for (player: Player in playersList) {
+                var score = 0
+
+                for (round: Round in rounds) {
+                    round.scores[player.playerNumber]?.let {
+                        score += it
+                    }
+                }
+
+                totalsRound.scores[player.playerNumber] = score
+            }
+
+            round.postValue(totalsRound)
         }
     }
 

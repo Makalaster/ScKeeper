@@ -2,7 +2,6 @@ package com.makalaster.sckeeper.gameactivity.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.makalaster.data.models.Round
 import com.makalaster.sckeeper.gameactivity.RoundFragment
@@ -11,7 +10,7 @@ class RoundPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
     private val roundsList = arrayListOf<Round>()
 
     override fun getItem(position: Int): Fragment {
-        return RoundFragment.newInstance(position)
+        return RoundFragment.newInstance(roundsList[position].roundNumber)
     }
 
     override fun getCount(): Int {
@@ -19,7 +18,7 @@ class RoundPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return "Round ${position + 1}"
+        return if (roundsList[position].roundNumber == Round.TOTALS_ROUND) "Totals" else "Round ${position + 1}"
     }
 
     fun setRounds(rounds: List<Round>) {
@@ -28,6 +27,9 @@ class RoundPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
         for (i in rounds.indices) {
             roundsList.add(rounds[i])
         }
+
+        if (rounds.size > 1)
+            roundsList.add(Round(Round.TOTALS_ROUND))
 
         notifyDataSetChanged()
     }

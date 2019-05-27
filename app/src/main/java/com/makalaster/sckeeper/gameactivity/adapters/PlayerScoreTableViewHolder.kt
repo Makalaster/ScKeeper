@@ -8,10 +8,12 @@ import com.makalaster.data.models.Player
 import com.makalaster.data.models.Round
 import com.makalaster.widgets.ScoreBoxListener
 import kotlinx.android.synthetic.main.layout_player_viewholder.view.*
+import kotlinx.android.synthetic.main.layout_player_viewholder.view.player_name
+import kotlinx.android.synthetic.main.layout_total_viewholder.view.*
 
 abstract class PlayerScoreTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    class PlayerViewHolder(itemView: View, private val round: Round, private val scoreBoxListener: ScoreBoxListener) : PlayerScoreTableViewHolder(itemView) {
+    class PlayerViewHolder(itemView: View, private val round: Round, private val scoreBoxListener: ScoreBoxListener): PlayerScoreTableViewHolder(itemView) {
         fun bind(player: Player) {
             itemView.player_name.text = player.name
             itemView.score_container.setItemId(player.playerNumber)
@@ -24,7 +26,17 @@ abstract class PlayerScoreTableViewHolder(itemView: View) : RecyclerView.ViewHol
         }
     }
 
-    class AddPlayerViewHolder(itemView: View, private val listener: OnAddPlayerClickedListener) : PlayerScoreTableViewHolder(itemView) {
+    class TotalScoreViewHolder(itemView: View, private val round: Round): PlayerScoreTableViewHolder(itemView) {
+        fun bind(player: Player) {
+            itemView.player_name.text = player.name
+
+            round.scores[player.playerNumber]?.let {
+                itemView.player_score.text = it.toString()
+            }
+        }
+    }
+
+    class AddPlayerViewHolder(itemView: View, private val listener: OnAddPlayerClickedListener): PlayerScoreTableViewHolder(itemView) {
         fun bind() {
             itemView.findViewById<Button>(R.id.add_player).setOnClickListener {
                 listener.onAddPlayerClicked()

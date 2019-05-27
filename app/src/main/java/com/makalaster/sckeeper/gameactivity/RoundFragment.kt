@@ -76,6 +76,8 @@ class RoundFragment : Fragment(), PlayerScoreTableViewHolder.AddPlayerViewHolder
         viewModel = ViewModelProviders.of(this, RoundViewModelFactory(application, paramBundle.getInt(ROUND_NUMBER)))
             .get(RoundViewModel::class.java)
 
+        initRecyclerView()
+
         viewModel.players.observe(this, Observer {
             it.let { playerList ->
                 adapter.updatePlayers(playerList)
@@ -87,8 +89,6 @@ class RoundFragment : Fragment(), PlayerScoreTableViewHolder.AddPlayerViewHolder
                 adapter.updateRound(it)
             }
         })
-
-        initRecyclerView()
     }
 
     private fun initRecyclerView() {

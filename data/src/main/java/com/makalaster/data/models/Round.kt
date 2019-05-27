@@ -15,5 +15,7 @@ data class Round(@PrimaryKey
 
     companion object {
         const val TABLE_NAME = "ROUNDS"
+
+        const val TOTALS_ROUND = -1
     }
 }
