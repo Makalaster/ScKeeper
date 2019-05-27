@@ -54,16 +54,18 @@ class GameActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(GameActivityViewModel::class.java)
 
-        viewModel.rounds.observe(this, Observer {rounds ->
+        viewModel.rounds.observe(this, Observer { rounds ->
             rounds?.let { roundsList ->
                 if (roundsList.isEmpty()) {
                     viewModel.addRound(Round(0))
                 }
 
                 pagerAdapter.setRounds(roundsList)
-
-                round_pager.setCurrentItem(pagerAdapter.count -1, true)
             }
+        })
+
+        viewModel.roundAdded.observe(this, Observer {
+            round_pager.setCurrentItem(pagerAdapter.count -1, true)
         })
     }
 }

@@ -17,22 +17,18 @@ class GameActivityViewModel(application: Application) : AndroidViewModel(applica
     private val roundRepository: RoundRepository
     private val playerRepository: PlayerRepository
 
-    val rounds: MutableLiveData<List<Round>> = MutableLiveData()
+    val rounds: LiveData<List<Round>>
+
+    val roundAdded: MutableLiveData<Void> = MutableLiveData()
 
     init {
         val roundDao = GameDatabase.getInstance(application).roundDao()
         roundRepository = RoundRepository(roundDao)
 
+        rounds = roundRepository.allRounds
+
         val playerDao = GameDatabase.getInstance(application).playerDao()
         playerRepository = PlayerRepository(playerDao)
-
-        loadRounds()
-    }
-
-    fun loadRounds() {
-        viewModelScope.launch(Dispatchers.IO) {
-            rounds.postValue(roundRepository.getRoundsNotLive())
-        }
     }
 
     fun clearAll() {
@@ -46,8 +42,6 @@ class GameActivityViewModel(application: Application) : AndroidViewModel(applica
     fun clearRounds() {
         viewModelScope.launch(Dispatchers.IO) {
             roundRepository.clearRounds()
-
-            loadRounds()
         }
     }
 
@@ -59,7 +53,7 @@ class GameActivityViewModel(application: Application) : AndroidViewModel(applica
 
             roundRepository.insertRound(round)
 
-            loadRounds()
+            roundAdded.postValue(null)
         }
     }
 }

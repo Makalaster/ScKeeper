@@ -9,14 +9,15 @@
         android:id="@+id/decrement_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" - "/>
+        android:text="@string/decrement"/>
 
     <TextView
         android:id="@+id/score_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="16dp"
+        android:text="@string/zero_score"/>
 
     <EditText
         android:id="@+id/enter_score"
@@ -29,6 +30,6 @@
         android:id="@+id/increment_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" + "/>
+        android:text="@string/increment"/>
 
 </LinearLayout>

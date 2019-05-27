@@ -19,8 +19,6 @@ class RoundRepository(private val roundDao: RoundDao) {
     @WorkerThread
     fun clearRounds() {
         roundDao.clearRounds()
-
-        insertRound(Round(0))
     }
 
     @WorkerThread

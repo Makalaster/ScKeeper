@@ -3,14 +3,15 @@ package com.makalaster.sckeeper.gameactivity.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.makalaster.data.models.Round
 import com.makalaster.sckeeper.gameactivity.RoundFragment
 
-class RoundPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
-    private val roundsList = arrayListOf<RoundFragment>()
+class RoundPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+    private val roundsList = arrayListOf<Round>()
 
     override fun getItem(position: Int): Fragment {
-        return roundsList[position]
+        return RoundFragment.newInstance(position)
     }
 
     override fun getCount(): Int {
@@ -25,7 +26,7 @@ class RoundPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
         roundsList.clear()
 
         for (i in rounds.indices) {
-            roundsList.add(RoundFragment.newInstance(i))
+            roundsList.add(rounds[i])
         }
 
         notifyDataSetChanged()
