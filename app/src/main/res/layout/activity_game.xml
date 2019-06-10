@@ -36,6 +36,11 @@
 
     </androidx.viewpager.widget.ViewPager>
 
+    <include
+        android:id="@+id/totals_bottom_sheet"
+        layout="@layout/totals_bottom_sheet"
+        android:visibility="gone" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

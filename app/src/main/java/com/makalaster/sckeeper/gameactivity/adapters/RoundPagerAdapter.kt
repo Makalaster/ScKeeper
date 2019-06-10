@@ -28,9 +28,6 @@ class RoundPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
             roundsList.add(rounds[i])
         }
 
-        if (rounds.size > 1)
-            roundsList.add(Round(Round.TOTALS_ROUND))
-
         notifyDataSetChanged()
     }
 }

@@ -3,6 +3,7 @@ package com.makalaster.sckeeper.gameactivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -59,6 +60,8 @@ class GameActivity : AppCompatActivity() {
                 if (roundsList.isEmpty()) {
                     viewModel.addRound(Round(0))
                 }
+
+                totals_bottom_sheet.visibility = if (roundsList.size > 1) View.VISIBLE else View.GONE
 
                 pagerAdapter.setRounds(roundsList)
             }
